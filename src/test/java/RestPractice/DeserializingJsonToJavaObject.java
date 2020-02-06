@@ -16,6 +16,12 @@ public class DeserializingJsonToJavaObject {
     @Test
     public void DeserializeAnJsonToObject_Test(){
 
+        Spartan sp1=get(baseURI+"/spartans/100").
+                jsonPath().
+                getObject("", Spartan.class)
+                ;
+        System.out.println(sp1);
+
 
 
 
