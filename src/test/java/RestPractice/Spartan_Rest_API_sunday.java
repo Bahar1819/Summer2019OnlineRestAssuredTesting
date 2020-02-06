@@ -34,4 +34,24 @@ public class Spartan_Rest_API_sunday {
                 .header("Date", notNullValue())
                 ;
     }
+
+    @Test
+    public void Single_Spartan_LoggingAll_Details_Test(){
+
+        given()
+                .pathParam("my_id", 3)
+                .log().all().//we can put log().all() to see all request information in console
+        when()
+                .get(baseURI+"/spartans/{my_id}").prettyPeek().
+        then()
+                //we can put log().all() to see all response information in console
+                //there ae multiple option to see exactly when we want to see the log
+                //in below example we only want to see the log if any validation fails
+                .log().ifValidationFails()
+                .statusCode(200)
+
+                ;
+
+    }
+
 }
