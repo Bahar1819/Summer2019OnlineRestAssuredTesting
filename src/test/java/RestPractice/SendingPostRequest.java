@@ -84,11 +84,30 @@ public class SendingPostRequest {
                 .body("success", is("A Spartan is Born!"))
                 .body("data.name", equalToIgnoringCase("Habib"))
                 .body("data.phone", hasToString("35963258747"))
-
-
         ;
+    }
+
+    @Test
+    public void Add_NewSpartan_WithPojoAsBody_Test(){
+
+        Spartan spartan= new Spartan("Myensulu", "Female", 1231231231);
 
 
 
+        given()
+                .log().all()
+                .contentType(ContentType.JSON)
+                .body(spartan).
+                when()
+                .post(baseURI+"/spartans").prettyPeek().
+                then()
+                .log().all()
+                .statusCode(201)
+                .contentType(ContentType.JSON)
+                .body("success", is("A Spartan is Born!"))
+                .body("data.name", equalToIgnoringCase("Myensulu"))
+                .body("data.phone", hasToString("1231231231"))
+        ;
     }
 }
+
