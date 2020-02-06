@@ -16,15 +16,16 @@ public class DeserializingJsonToJavaObject {
     @Test
     public void DeserializeAnJsonToObject_Test(){
 
-        Spartan sp1=get(baseURI+"/spartans/100").
+        //First way
+        Spartan sp1=get(baseURI+"/spartans/100").prettyPeek().
                 jsonPath().
                 getObject("", Spartan.class)
                 ;
         System.out.println(sp1);
 
-
-
-
+        //Second Way
+        Spartan sp2= get(baseURI+"/spartans/15").prettyPeek().as(Spartan.class);
+        System.out.println(sp2);
 
     }
 
