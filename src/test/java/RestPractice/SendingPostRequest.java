@@ -67,9 +67,6 @@ public class SendingPostRequest {
         bodyMap.put("gender", "Male");
         bodyMap.put("phone", "96542577851");
 
-
-
-
         given()
                 .log().all()
                 .contentType(ContentType.JSON)
