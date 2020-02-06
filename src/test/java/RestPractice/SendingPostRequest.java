@@ -92,8 +92,6 @@ public class SendingPostRequest {
 
         Spartan spartan= new Spartan("Myensulu", "Female", 1231231231);
 
-
-
         given()
                 .log().all()
                 .contentType(ContentType.JSON)
@@ -109,5 +107,56 @@ public class SendingPostRequest {
                 .body("data.phone", hasToString("1231231231"))
         ;
     }
+
+    @Test
+    public void Add_NewSpartan_negative_Test(){
+
+        Spartan spartan= new Spartan("M", "Female", 1231231231);
+
+        given()
+                .log().all()
+                .contentType(ContentType.JSON)
+                .body(spartan).
+                when()
+                .post(baseURI+"/spartans").prettyPeek().
+                then()
+                .log().all()
+                .assertThat()
+                .statusCode(400)
+                .contentType(ContentType.JSON)
+                .body("error", is("Bad Request"))
+                .body ("errors[0].defaultMessage", is("name should be at least 2 character and max 15 character"))
+
+        ;
+    }
+
+    @Test
+    public void Add_NewSpartan_negativeNameGenderPhone_Test(){
+
+        Spartan spartan= new Spartan("M", "F", 123);
+
+        given()
+                .log().all()
+                .contentType(ContentType.JSON)
+                .body(spartan).
+                when()
+                .post(baseURI+"/spartans").prettyPeek().
+                then()
+                .log().all()
+                .assertThat()
+                .statusCode(400)
+                .contentType(ContentType.JSON)
+                .body("error", is("Bad Request"))
+        //        .body ("errors.defaultMessage", hasItem("name should be at least 2 character and max 15 character"))
+          //      .body ("errors.defaultMessage", hasItem("name should be at least 2 character and max 15 character"))
+                 .body("errors.defaultMessage", hasSize(3))
+                 .body("errors.defaultMessage", hasItems("Phone number should be at least 10 digit and UNIQUE!!",
+                         "name should be at least 2 character and max 15 character",
+                         "Gender should be either Male or Female"))
+                 .body("message", containsString("Error count: 3"))
+        ;
+    }
+
+
 }
 
