@@ -105,11 +105,45 @@ public class SpartanRest_Test {
         assertEquals(406, response.statusCode());
         System.out.println(response.statusLine());
 
-
-
-
     }
 
+    /*
+    Given accept header is json
+    query parameters gender Male
+    When User send request to /api/spartans/search
+    Then Response status code should be 200
+    and header should have content Type/JSON
+     */
+
+    @Test
+    public void Search_By_Providing_Query_Parameter(){
+        Response response=
+                given().
+                        accept(ContentType.JSON).
+                        queryParam("gender", "Male").
+                      //  param("gender", "Male").
+                when().
+                        get(baseURI+"/spartans/search");
+        assertEquals(200, response.statusCode());
+        assertFalse(response.asString().contains("Female"));
+        response.prettyPrint();
+
+        System.out.println(response.path("pageable.sort.sorted").toString());
+    }
+
+    @Test
+    public void SingleSpartanData_Json_FieldValue_Test(){
+        Response response=
+                given().
+                        pathParam("id", 5).
+                        when().
+                        get(baseURI+"/spartans/{id}");
+        response.prettyPrint();
+        System.out.println(response.path("name").toString());
+        System.out.println(response.path("phone").toString());
+
+        assertEquals("Blythe", response.path("name").toString());
+    }
 
 
 }
